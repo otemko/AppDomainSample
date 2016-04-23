@@ -38,14 +38,14 @@ namespace ActionAlgorithm.MyAppDomain
             return MAppDomain.GetAssemblies();
         }
 
-        public IPlugin GetObjectPlugin(string assembly, string _class)
+        public IPlugin GetObjectPlugin(string assemblyFullName, string _class)
         {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (assemblyFullName == null) throw new ArgumentNullException(nameof(assemblyFullName));
 
-            var refAsm = Assembly.ReflectionOnlyLoadFrom(assembly);
+            var refAsm = Assembly.ReflectionOnlyLoadFrom(assemblyFullName);
             if (refAsm == null) return null;
 
-            var pluginType = refAsm.GetType(string.Concat(assembly.Split('.')[0], ".", _class));
+            var pluginType = refAsm.GetType(string.Concat(assemblyFullName.Split('.')[0], ".", _class));
             
             return (IPlugin)MAppDomain.CreateInstanceFromAndUnwrap(refAsm.Location, pluginType.FullName);
         }

@@ -8,7 +8,7 @@ namespace ActionAlgorithm.MyAppDomain
     {
         AppDomain MAppDomain { get;}
         Assembly[] GetAssemblies();
-        IPlugin GetObjectPlugin(string s, string s1);
+        IPlugin GetObjectPlugin(string assemblyFullName, string s1);
         void UnloadAppDomain();
     }
 }

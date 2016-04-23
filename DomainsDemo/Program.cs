@@ -46,9 +46,9 @@ namespace DomainsDemo
         {
             var listActionPlugin = new List<IActionPlugin>
             {
-                new ActionPlugin(TypeOperation.Product, "Product", "ArithmeticPlugin"),
-                new ActionPlugin(TypeOperation.Minimum, "Minimum", "StatisticPlugin"),
-                new ActionPlugin(TypeOperation.Maximum, "Maximum", "StatisticPlugin")
+                new ActionPlugin(TypeOperation.Product, "Product", "ArithmeticPlugin.dll"),
+                new ActionPlugin(TypeOperation.Minimum, "Minimum", "StatisticPlugin.dll"),
+                new ActionPlugin(TypeOperation.Maximum, "Maximum", "StatisticPlugin.dll")
             };
             return listActionPlugin;
         }
@@ -57,10 +57,13 @@ namespace DomainsDemo
         {
             var path = @"file";
 
-            SetActionPluginsInFile(new StreamFileActionPlugins("text.txt"), SetActionPluginsInFile());
+            var streamFile = new StreamFileActionPlugins($"{path}.txt");
 
-            var actionAlgotihm = new AAlgorithm(GetQueueAction(), GetActionPluginsFromFile(
-                new BinaryFileActionPlugins(path)));
+            //var streamFile = new BinaryFileActionPlugins(path);
+
+            //SetActionPluginsInFile(new StreamFileActionPlugins($"{path}.txt"), SetActionPluginsInFile());
+
+            var actionAlgotihm = new AAlgorithm(GetQueueAction(), GetActionPluginsFromFile(streamFile));
 
             foreach (var d in actionAlgotihm.Run())
             {

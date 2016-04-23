@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using ActionAlgorithm.ActionPlugins;
 
 namespace ActionAlgorithm.FileWorker
@@ -40,16 +41,30 @@ namespace ActionAlgorithm.FileWorker
 
             using (var streamReader = new StreamReader(Path, System.Text.Encoding.Default))
             {
+                var pattern = @"\[(.*?)\]";
+                var rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+
                 while (streamReader.Peek() > -1)
                 {
-                    var line = streamReader.ReadLine();
-                    //var operation = binaryReader.ReadString();
-                    //var _class = binaryReader.ReadString();
-                    //var assembly = binaryReader.ReadString();
+                    string operation = null, _class= null, assembly = null;
 
-                    //IActionPlugin book = new ActionPlugin((TypeOperation)Enum.Parse(typeof(TypeOperation), operation), _class, assembly);
+                    foreach (Match match in rgx.Matches(streamReader.ReadLine()))
+                    {
+                        if (match.Value.Contains(",") == false)
+                        {
+                            operation = match.Value.Substring(match.Value.IndexOf("[") + 1, match.Value.IndexOf("]") - 1);
+                        }
+                        else
+                        {
+                            _class = match.Value.Split(',')[0];
+                            _class = _class.Substring(_class.IndexOf("[") + 1);
+                            assembly = match.Value.Split(',')[1];
+                            assembly = assembly.Substring(0, assembly.IndexOf("]"));
+                        }  
+                    }
+                    IActionPlugin actionPlugin = new ActionPlugin((TypeOperation)Enum.Parse(typeof(TypeOperation), operation), _class, assembly);
 
-                    //actionPlugins.Add(book);
+                    actionPlugins.Add(actionPlugin);
                 }
             }
             return actionPlugins;

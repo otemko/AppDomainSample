@@ -48,9 +48,9 @@ namespace ActionAlgorithm.FileWorker
                     var _class = binaryReader.ReadString();
                     var assembly = binaryReader.ReadString();
 
-                    IActionPlugin book = new ActionPlugin((TypeOperation)Enum.Parse(typeof(TypeOperation), operation), _class, assembly);
+                    IActionPlugin actionPlugin = new ActionPlugin((TypeOperation)Enum.Parse(typeof(TypeOperation), operation), _class, assembly);
 
-                    actionPlugins.Add(book);
+                    actionPlugins.Add(actionPlugin);
                 }
             }
             return actionPlugins;
